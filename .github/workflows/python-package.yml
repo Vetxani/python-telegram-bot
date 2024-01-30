@@ -1,0 +1,41 @@
+import os
+from dotenv import load_dotenv
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+
+# Cargar variables de entorno desde un archivo .env
+load_dotenv()
+
+# Obtener el token de acceso del bo+t de las variables de entorno
+TOKEN = os.getenv(6599928724:AAHnJvd_-lWXZ2d1kIDaZjOaoadHZm2wltc)
+
+# Definir una función para el comando /start
+def start(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Hola soy vetxany")
+
+# Definir una función para manejar mensajes
+def echo(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
+
+def main():
+    # Crear un Updater para manejar la recepción de actualizaciones de Telegram
+    updater = Updater(token=TOKEN, use_context=True)
+
+    # Obtener el despachador para registrar manejadores
+    dispatcher = updater.dispatcher
+
+    # Registrar un manejador para el comando /start
+    start_handler = CommandHandler('start', start)
+    dispatcher.add_handler(start_handler)
+
+    # Registrar un manejador para manejar mensajes
+    echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
+    dispatcher.add_handler(echo_handler)
+
+    # Iniciar el bot
+    updater.start_polling()
+
+    # Mantener el bot en funcionamiento hasta que se presione Ctrl + C
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
